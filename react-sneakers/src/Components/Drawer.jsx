@@ -1,4 +1,4 @@
-function Drawer(props) {
+function Drawer({handleClickClose}) {
     return(
         <div className="overlay">
             <div className="drawer">
@@ -6,7 +6,8 @@ function Drawer(props) {
                     <img className="cu-p"
                          src="/img/btn-remove.svg"
                          alt="Close"
-                         onClick={props.onClose}/></h2>
+                         onClick={handleClickClose}/>
+                </h2>
                 <div className="items">
                     <div className="cartItem d-flex align-center mb-40">
                         <div

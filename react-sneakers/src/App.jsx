@@ -2,39 +2,35 @@ import './App.css';
 import Card from './Components/Card/Card'
 import Header from "./Components/Header";
 import Drawer from "./Components/Drawer";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 
-const arr = [
-    {
-        title: 'Мужские Кроссовки Nike Blazer Mid Suede',
-        price: 12999,
-        imageUrl: '/img/sneakers/1.jpg',
-    },
-    {
-        title: 'Мужские Кроссовки Nike Air Max 270',
-        price: 15600,
-        imageUrl: '/img/sneakers/2.jpg'
-    },
-    {
-        title: 'Кроссовки Puma X Aka Boku Future Rider',
-        price: 8999,
-        imageUrl: '/img/sneakers/4.jpg',
-    },
-    {
-        title: 'Мужские Кроссовки Nike Blazer Mid Suede',
-        price: 8499,
-        imageUrl: '/img/sneakers/3.jpg',
-    },
-];
 
 function App() {
+    const [items, setItems] = useState(['']);
     const [cartOpened, setCartOpened] = useState(false);
 
+    useEffect(() => {
+        fetch('https://64fde9e8596493f7af7ec2a3.mockapi.io/items')
+            .then((res) => {
+                return res.json();
+            })
+            .then((json) => {
+                setItems(json);
+            });
+    }, []);
+
+    function handleClickClose(){
+        setCartOpened(false)
+    };
+
+
+    function handleClickCart(){
+        setCartOpened(true)
+    }
     return (
         <div className="wrapper clear">
-            {cartOpened ? <Drawer onClose={() => setCartOpened(false)}/> : null}
-            <Drawer/>
-            <Header onClickCart={() => setCartOpened(true)}/>
+            {cartOpened ? <Drawer handleClickClose={handleClickClose}/> : null}
+            <Header handleClickCart={handleClickCart}/>
             <div className="content p-40">
                 <div className="d-flex align-center mb-40 justify-between">
                     <h1>Все кроссовки</h1>
@@ -43,12 +39,12 @@ function App() {
                     <input placeholder="Поиск..."/>
                 </div>
                 </div>
-                <div className="sneakers d-flex">
-                {arr.map((obj) =>
+                <div className="sneakers d-flex flex-wrap">
+                {items.map((item,) =>
                 <Card
-                    title={obj.title}
-                    price={obj.price}
-                    imageUrl={obj.imageUrl}/>)}
+                    title={item.title}
+                    price={item.price}
+                    imageUrl={item.imageUrl}/>)}
             </div>
             </div>
         </div>
