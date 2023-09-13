@@ -8,6 +8,8 @@ import {useEffect, useState} from "react";
 function App() {
     const [items, setItems] = useState(['']);
     const [cartOpened, setCartOpened] = useState(false);
+    const [cartItems, setCartItems] = useState([]);
+    const [searchValue, setSearchValue] = useState('');
 
     useEffect(() => {
         fetch('https://64fde9e8596493f7af7ec2a3.mockapi.io/items')
@@ -19,6 +21,10 @@ function App() {
             });
     }, []);
 
+    const onAddToCart = (obj) => {
+        setCartItems([...cartItems, obj]);
+    };
+
     function handleClickClose(){
         setCartOpened(false)
     };
@@ -27,9 +33,13 @@ function App() {
     function handleClickCart(){
         setCartOpened(true)
     }
+
+    const onChangeSearchInput = (event) => {
+
+    }
     return (
         <div className="wrapper clear">
-            {cartOpened ? <Drawer handleClickClose={handleClickClose}/> : null}
+            {cartOpened ? <Drawer items={cartItems} handleClickClose={handleClickClose}/> : null}
             <Header handleClickCart={handleClickCart}/>
             <div className="content p-40">
                 <div className="d-flex align-center mb-40 justify-between">
@@ -40,11 +50,14 @@ function App() {
                 </div>
                 </div>
                 <div className="sneakers d-flex flex-wrap">
-                {items.map((item,) =>
+                {items.map((item, index) =>
                 <Card
+                    key={index}
                     title={item.title}
                     price={item.price}
-                    imageUrl={item.imageUrl}/>)}
+                    imageUrl={item.imageUrl}
+                    handleClickPlus={(obj) => onAddToCart(obj)}/>)
+               }
             </div>
             </div>
         </div>

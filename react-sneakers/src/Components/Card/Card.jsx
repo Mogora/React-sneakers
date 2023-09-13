@@ -1,10 +1,11 @@
 import styles from './Card.module.scss';
 import React from 'react';
 
-function Card(props) {
+function Card({price, imageUrl, title, handleClickPlus, handleClickFavorite}) {
     const [isAdded, setIsAdded] = React.useState(false);
 
     const onClickPlus = () => {
+        handleClickPlus({price, imageUrl, title});
         setIsAdded(!isAdded);
     }
 
@@ -13,12 +14,12 @@ function Card(props) {
             <div className="favorite">
                 <img src="/img/unliked.svg" alt="unliked"/>
             </div>
-            <img width={133} height={112} src={props.imageUrl} alt="Sneakers"/>
-            <h5>{props.title}</h5>
+            <img width={133} height={112} src={imageUrl} alt="Sneakers"/>
+            <h5>{title}</h5>
             <div className="d-flex justify-between align-center">
                 <div className="d-flex flex-column">
                     <span>Цена:</span>
-                    <b>{props.price}</b>
+                    <b>{price}</b>
                 </div>
                 <img className={styles.plus} onClick={onClickPlus} src={isAdded ? '/img/btn-checked.svg' : '/img/btn-plus.svg'}/>
             </div>
