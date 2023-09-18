@@ -29,13 +29,12 @@ function App() {
         setCartOpened(false)
     };
 
-
     function handleClickCart(){
         setCartOpened(true)
     }
 
     const onChangeSearchInput = (event) => {
-
+        setSearchValue(event.target.value);
     }
     return (
         <div className="wrapper clear">
@@ -43,14 +42,23 @@ function App() {
             <Header handleClickCart={handleClickCart}/>
             <div className="content p-40">
                 <div className="d-flex align-center mb-40 justify-between">
-                    <h1>Все кроссовки</h1>
+                    <h1>{searchValue ? `Поиск по запросу: "${searchValue}"` : "Все кроссовки"}</h1>
                     <div className="search-block d-flex">
-                    <img src="/img/search.svg" alt="Search"/>
-                    <input placeholder="Поиск..."/>
-                </div>
+                        <img src="/img/search.svg" alt="Search"/>
+                        {searchValue && (
+                            <img className="clear cu-p"
+                                 onClick={() => setSearchValue('')}
+                                 src="/img/btn-remove.svg"
+                                 alt="Clear" />
+                        )}
+                        <input onChange={onChangeSearchInput}
+                            value={searchValue}
+                            placeholder="Поиск..."/>
+                    </div>
                 </div>
                 <div className="sneakers d-flex flex-wrap">
-                {items.map((item, index) =>
+                {items.filter((item) => item.title.toLowerCase().includes(searchValue.toLowerCase())).
+                map((item, index) =>
                 <Card
                     key={index}
                     title={item.title}
@@ -58,7 +66,7 @@ function App() {
                     imageUrl={item.imageUrl}
                     handleClickPlus={(obj) => onAddToCart(obj)}/>)
                }
-            </div>
+                </div>
             </div>
         </div>
   );
