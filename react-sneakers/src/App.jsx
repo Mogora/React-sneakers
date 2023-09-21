@@ -15,7 +15,6 @@ function App() {
     useEffect(() => {
         axios.get('https://64fde9e8596493f7af7ec2a3.mockapi.io/items').then((res) => {
             setItems(res.data);
-            console.log(res.data)
         });
         axios.get('https://64fde9e8596493f7af7ec2a3.mockapi.io/cart').then((res) => {
             setCartItems(res.data);
@@ -65,15 +64,14 @@ function App() {
                 </div>
                 <div className="sneakers d-flex flex-wrap">
                     {items
-                        .filter((item) => item.title.toLowerCase().includes(searchValue.toLowerCase()))
+                        .filter((item) => item.title?.toLowerCase().includes(searchValue.toLowerCase()))
                         .map((item, index) => (
                             <Card
                                 key={index}
-                                // title={item.title}
-                                // price={item.price}
-                                // imageUrl={item.imageUrl}
-                                handleClickPlus={(obj) => onAddToCart(obj)}
-                                {...item}/>
+                                title={item.title}
+                                price={item.price}
+                                imageUrl={item.imageUrl}
+                                handleClickPlus={(obj) => onAddToCart(obj)}/>
                         ))}
                 </div>
             </div>
