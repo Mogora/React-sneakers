@@ -28,6 +28,7 @@ function Home ({items, searchValue, setSearchValue,
                             title={item.title}
                             price={item.price}
                             imageUrl={item.imageUrl}
+                            id={item.id}
                             handleClickPlus={(obj) => onAddToCart(obj)}
                             onAddToFavorite={(obj) => onAddToFavorite(obj)}
                         />

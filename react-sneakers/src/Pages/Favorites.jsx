@@ -1,7 +1,6 @@
 import Card from "../Components/Card/Card";
 
-function Favorites ({items, searchValue, setSearchValue,
-                   onChangeSearchInput, onAddToCart, onAddToFavorite}) {
+function Favorites ({items, onAddToFavorite}) {
     return (
         <div className="content p-40">
             <div className="d-flex align-center mb-40 justify-between">
@@ -13,10 +12,10 @@ function Favorites ({items, searchValue, setSearchValue,
             <div className="sneakers d-flex flex-wrap">
                 {items.map((item, index) => (
                     <Card key={index}
-                          {...item}
-                          // title={item.title}
-                          // price={item.price}
-                          // imageUrl={item.imageUrl}
+                          title={item.title}
+                          price={item.price}
+                          imageUrl={item.imageUrl}
+                          id={item.id}
                           onAddToFavorite={onAddToFavorite}
                           favorited={true}
                           />

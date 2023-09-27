@@ -32,10 +32,20 @@ function App() {
         setCartItems([...cartItems, obj]);
     };
 
-    const onAddToFavorite = (obj) => {
-        axios.post('https://6fabf5efe5bd68d8.mokky.dev/favorites', obj);
-        setFavorites([...favorites, obj]);
-        console.log(favorites)
+    const onAddToFavorite = async (obj) => {
+        try {
+            if (favorites.find((favoritesObj) => favoritesObj.id === obj.id)) {
+                axios.delete(`https://6fabf5efe5bd68d8.mokky.dev/favorites/${obj.id}`);
+            }
+            else {
+                const {data} = await axios.post('https://6fabf5efe5bd68d8.mokky.dev/favorites', obj);
+                setFavorites((prev) => [...prev, data]);
+            }
+        }
+        catch (error) {
+            alert('Не удалось добавить в избранное');
+        }
+
     };
 
     const onRemoveItem = (id) => {
