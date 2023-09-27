@@ -1,7 +1,25 @@
 import Card from "../Components/Card/Card";
 
 function Home ({items, searchValue, setSearchValue,
-                   onChangeSearchInput, onAddToCart, onAddToFavorite}) {
+                   onChangeSearchInput, onAddToCart, onAddToFavorite, isLoading}) {
+    const renderItems = () => {
+        const filtredItems = items.filter((item) =>
+            item.title?.toLowerCase().includes(searchValue.toLowerCase()),
+        );
+        return (isLoading ? [...Array(8)] : filtredItems).map((item, index) => (
+            <Card
+                key={index}
+                title={item.title}
+                price={item.price}
+                imageUrl={item.imageUrl}
+                id={item.id}
+                onFavorite={(obj) => onAddToFavorite(obj)}
+                onPlus={(obj) => onAddToCart(obj)}
+                loading={isLoading}
+            />
+        ));
+    };
+
     return (
         <div className="content p-40">
             <div className="d-flex align-center mb-40 justify-between">
@@ -20,19 +38,7 @@ function Home ({items, searchValue, setSearchValue,
                 </div>
             </div>
             <div className="sneakers d-flex flex-wrap">
-                {items
-                    .filter((item) => item.title?.toLowerCase().includes(searchValue.toLowerCase()))
-                    .map((item, index) => (
-                        <Card
-                            key={index}
-                            title={item.title}
-                            price={item.price}
-                            imageUrl={item.imageUrl}
-                            id={item.id}
-                            handleClickPlus={(obj) => onAddToCart(obj)}
-                            onAddToFavorite={(obj) => onAddToFavorite(obj)}
-                        />
-                    ))}
+                {renderItems()}
             </div>
         </div>
     )
