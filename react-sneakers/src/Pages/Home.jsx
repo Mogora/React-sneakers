@@ -2,11 +2,12 @@ import Card from "../Components/Card/Card";
 
 function Home ({items, searchValue, setSearchValue,
                    onChangeSearchInput, onAddToCart, onAddToFavorite, isLoading}) {
+    const array = [...Array(8).fill({})];
     const renderItems = () => {
         const filtredItems = items.filter((item) =>
             item.title?.toLowerCase().includes(searchValue.toLowerCase()),
         );
-        return (isLoading ? [...Array(8)] : filtredItems).map((item, index) => (
+        return (isLoading ? [array] : filtredItems).map((item, index) => (
             <Card
                 key={index}
                 title={item.title}
@@ -16,6 +17,7 @@ function Home ({items, searchValue, setSearchValue,
                 onFavorite={(obj) => onAddToFavorite(obj)}
                 onPlus={(obj) => onAddToCart(obj)}
                 loading={isLoading}
+
             />
         ));
     };

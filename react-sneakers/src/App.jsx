@@ -1,12 +1,13 @@
 import './App.css';
 import Header from "./Components/Header";
 import Drawer from "./Components/Drawer";
-import {useEffect, useState} from "react";
+import {createContext, useEffect, useState} from "react";
 import axios from "axios";
 import {Route, Routes} from "react-router-dom";
 import Home from "./Pages/Home";
 import Favorites from "./Pages/Favorites";
 
+export const AppContext =  createContext({});
 
 function App() {
     const [items, setItems] = useState(['']);
@@ -73,34 +74,39 @@ function App() {
         setSearchValue(event.target.value);
     }
 
-    console.log(favorites);
+    const isItemAdded = (id) => {
+        return cartItems.some((obj) => Number(obj.id) === Number(id));
+    }
+
     return (
-        <div className="wrapper clear">
-            {cartOpened && <Drawer items={cartItems} handleClickClose={() => setCartOpened(false)} onRemove={onRemoveItem}/>}
-            <Header handleClickCart={handleClickCart}/>
+        <AppContext.Provider value={{items, cartItems, favorites, isItemAdded}}>
+            <div className="wrapper clear">
+                {cartOpened && <Drawer items={cartItems} handleClickClose={() => setCartOpened(false)} onRemove={onRemoveItem}/>}
+                <Header handleClickCart={handleClickCart}/>
 
-            <Routes>
-                <Route path="/" exact element={
-                    <Home items={items}
-                          searchValue={searchValue}
-                          setSearchValue={setSearchValue}
-                          cartItems={cartItems}
-                          isLoading={isLoading}
-                          onChangeSearchInput={onChangeSearchInput}
-                          onAddToCart={onAddToCart}
-                          onAddToFavorite={onAddToFavorite}/>
-                }>>
-                </Route>
-            </Routes>
+                <Routes>
+                    <Route path="/" exact element={
+                        <Home items={items}
+                              searchValue={searchValue}
+                              setSearchValue={setSearchValue}
+                              cartItems={cartItems}
+                              isLoading={isLoading}
+                              onChangeSearchInput={onChangeSearchInput}
+                              onAddToCart={onAddToCart}
+                              onAddToFavorite={onAddToFavorite}/>
+                    }>>
+                    </Route>
+                </Routes>
 
-            <Routes>
-                <Route path="/favorites" exact element={
-                    <Favorites items={favorites}
-                               onAddToFavorite={onAddToFavorite}/>
-                }>></Route>
-            </Routes>
-        </div>
-  );
+                <Routes>
+                    <Route path="/favorites" exact element={
+                        <Favorites
+                                   onAddToFavorite={onAddToFavorite}/>
+                    }>></Route>
+                </Routes>
+            </div>
+        </AppContext.Provider>
+    );
 }
 
 export default App;
